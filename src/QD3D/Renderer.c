@@ -290,8 +290,10 @@ void Render_InitState(const TQ3ColorRGBA* clearColor)
 	// Set misc GL defaults that apply throughout the entire game
 	glAlphaFunc(GL_GREATER, 0.4999f);
 	glFrontFace(GL_CCW);
-	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 
+	#ifndef PSP
+	glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+	#endif
 	// Set up mesh queue
 	gMeshQueueSize = 0;
 	memset(gMeshQueuePtrs, 0, sizeof(gMeshQueuePtrs));
@@ -325,8 +327,9 @@ void Render_EnableFog(
 		TQ3ColorRGBA fogColor)
 {
 	(void) camHither;
-
+	#ifndef PSP
 	glHint(GL_FOG_HINT,		GL_NICEST);
+	#endif
 	glFogi(GL_FOG_MODE,		GL_LINEAR);
 	glFogf(GL_FOG_START,	fogHither * camYon);
 	glFogf(GL_FOG_END,		fogYon * camYon);

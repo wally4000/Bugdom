@@ -45,6 +45,9 @@ if(MSVC)
 	add_compile_definitions(UNICODE _UNICODE)
 
 	set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${GAME_TARGET})
+elseif(PSP)
+	include(FindPkgConfig)
+	pkg_search_module(SDL2 REQUIRED sdl2)
 elseif(APPLE)
 	# Let the game (and Pomme) find header files within SDL2.framework
 	set(CMAKE_XCODE_ATTRIBUTE_FRAMEWORK_SEARCH_PATHS extern)
@@ -113,6 +116,19 @@ elseif(APPLE)
 		${GAME_MAC_ICNS}
 		${SDL2_LIBRARIES}
 	)
+elseif(PSP)
+	list(APPEND GAME_LIBRARIES m pspaudio pspctrl pspvram pspgu pspdisplay psphprm pspvfpu pspge )
+
+	add_executable(${GAME_TARGET} ${GAME_ALL_SOURCES})
+
+	create_pbp_file(
+				TARGET ${PROJECT_NAME}
+				ICON_PATH NULL
+				BACKGROUND_PATH NULL
+				PREVIEW_PATH NULL
+				TTILE ${PROJECT_NAME}
+					)
+
 else()
 	# Math lib, explicitly required on some Linux systems
 	list(APPEND GAME_LIBRARIES m)
